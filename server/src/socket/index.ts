@@ -3,9 +3,11 @@ import { Server, Socket } from 'socket.io'
 import { setupAuctionHandlers, initializeActiveAuctions } from './auctionHandlers'
 
 export const initializeSocket = (httpServer: HTTPServer): Server => {
+  const origin = (process.env.CLIENT_URL || 'http://localhost:3000').replace(/\/$/, '')
+
   const io = new Server(httpServer, {
     cors: {
-      origin: process.env.CLIENT_URL || 'http://localhost:3000',
+      origin: [origin, `${origin}/`],
       methods: ['GET', 'POST'],
       credentials: true
     }
