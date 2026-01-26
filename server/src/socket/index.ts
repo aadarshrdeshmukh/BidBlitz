@@ -22,8 +22,7 @@ export const initializeSocket = (httpServer: HTTPServer): Server => {
     })
   })
 
-  // Initialize active auctions
-  initializeActiveAuctions(io)
-
   return io
 }
+
+export { initializeActiveAuctions }

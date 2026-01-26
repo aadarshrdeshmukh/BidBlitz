@@ -3,7 +3,7 @@ import { createServer } from 'http'
 import cors from 'cors'
 import dotenv from 'dotenv'
 import { connectDB } from './config/database'
-import { initializeSocket } from './socket'
+import { initializeSocket, initializeActiveAuctions } from './socket'
 import auctionRoutes from './routes/auctionRoutes'
 import userRoutes from './routes/userRoutes'
 import messageRoutes from './routes/messageRoutes'
@@ -37,9 +37,12 @@ app.get('/', (req, res) => {
 })
 
 // Connect to database and start server
-connectDB().then(() => {
+connectDB().then(async () => {
+  // Initialize state from database
+  await initializeActiveAuctions(io)
+
   httpServer.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`)
-    console.log(`Socket.IO initialized`)
+    console.log(`Socket.IO initialized and auctions synchronized`)
   })
 })
