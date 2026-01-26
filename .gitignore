@@ -18,6 +18,8 @@ server/dist/
 .next/
 dist/
 build/
+coverage/
+*.lcov
 
 # Logs
 *.log
