@@ -1,0 +1,17 @@
+{
+    "name": "BidBlitz",
+    "short_name": "BidBlitz",
+    "description": "Premium Real-Time Auctions",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#0a0a0c",
+    "theme_color": "#8b5cf6",
+    "icons": [
+        {
+            "src": "https://cdn-icons-png.flaticon.com/512/3258/3258443.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any maskable"
+        }
+    ]
+}
