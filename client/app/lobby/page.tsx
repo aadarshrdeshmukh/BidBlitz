@@ -25,7 +25,8 @@ export default function AuctionLobby() {
     category: 'All',
     minPrice: '',
     maxPrice: '',
-    sortBy: 'newest'
+    sortBy: 'newest',
+    auctionType: ''
   })
   const router = useRouter()
 
@@ -135,7 +136,8 @@ export default function AuctionLobby() {
                   category: 'All',
                   minPrice: '',
                   maxPrice: '',
-                  sortBy: 'newest'
+                  sortBy: 'newest',
+                  auctionType: ''
                 }
                 setFilters(resetFilters)
                 fetchAuctions(resetFilters)
