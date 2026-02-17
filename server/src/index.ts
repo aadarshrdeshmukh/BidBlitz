@@ -2,11 +2,14 @@ import express from 'express'
 import { createServer } from 'http'
 import cors from 'cors'
 import dotenv from 'dotenv'
+import helmet from 'helmet'
+import mongoSanitize from 'express-mongo-sanitize'
 import { connectDB } from './config/database'
 import { initializeSocket, initializeActiveAuctions } from './socket'
 import auctionRoutes from './routes/auctionRoutes'
 import userRoutes from './routes/userRoutes'
 import messageRoutes from './routes/messageRoutes'
+import { standardRateLimiter } from './middleware/rateLimiter'
 
 dotenv.config()
 
@@ -24,13 +27,18 @@ const app = express()
 const httpServer = createServer(app)
 const PORT = process.env.PORT || 5001
 
+// Security Middleware
+app.use(helmet()) // OWASP best practice: set security-related HTTP headers
+app.use(mongoSanitize()) // Prevent NoSQL injection attacks by sanitizing operator characters ($ and .)
+app.use(standardRateLimiter) // Apply rate limiting to all requests
+
 // Middleware
 app.use(cors({
   origin: (process.env.CLIENT_URL || 'http://localhost:3000').replace(/\/$/, ''),
   credentials: true
 }))
-app.use(express.json({ limit: '50mb' }))
-app.use(express.urlencoded({ limit: '50mb', extended: true }))
+app.use(express.json({ limit: '5mb' })) // Increased from 10kb to accommodate image data URIs while remaining secure
+app.use(express.urlencoded({ limit: '5mb', extended: true }))
 
 // Initialize Socket.IO
 const io = initializeSocket(httpServer)
