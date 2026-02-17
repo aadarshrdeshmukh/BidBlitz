@@ -10,6 +10,16 @@ import messageRoutes from './routes/messageRoutes'
 
 dotenv.config()
 
+// Pre-flight check for required environment variables
+const requiredEnvVars = ['MONGODB_URI', 'JWT_SECRET']
+const missingEnvVars = requiredEnvVars.filter(varName => !process.env[varName])
+
+if (missingEnvVars.length > 0) {
+  console.error(`❌ CRITICAL ERROR: Missing environment variables: ${missingEnvVars.join(', ')}`)
+  console.error('Please ensure these are set in your .env file or deployment dashboard.')
+  process.exit(1)
+}
+
 const app = express()
 const httpServer = createServer(app)
 const PORT = process.env.PORT || 5001
@@ -31,6 +41,7 @@ app.set('io', io)
 // Routes
 app.use('/api/auctions', auctionRoutes)
 app.use('/api/users', userRoutes)
+app.use('/api/messages', messageRoutes)
 
 app.get('/', (req, res) => {
   res.json({ message: 'BidBlitz API Server with Socket.IO' })
